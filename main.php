@@ -49,6 +49,7 @@ class ClocPlugin extends VGPlugin{
                         //Unixtime is always first, thats why it will to array on the next output row ^^
                         $unixtime = $output[$i];
                         $unixtime = str_replace("format","",$unixtime);
+                        $unixtime = $unixtime * 1000;//This is to fix the javascript way of handling time
                         array_push($graph_time,$unixtime);
                     }
                 }
@@ -59,10 +60,6 @@ class ClocPlugin extends VGPlugin{
 
             echo("<script id='source' language='javascript' type='text/javascript'>");
             echo("$(function(){");
-/*
-            echo("sizeof data ".sizeof($graph_data));
-            echo("sizeof time".sizeof($graph_time));
- */
 
             $blob = "";
             $first = true;
@@ -84,13 +81,13 @@ class ClocPlugin extends VGPlugin{
 
             echo("$.plot($('#placeholder'),["); 
                 echo("data");
-            echo("]);");
+            echo("],{xaxis: {mode:'time', timeformat: '%y/%m/%d'}});");
 
             echo("});");
             echo("</script>");
 
             //The actual div where the graph is placed
-            echo("<div style='width: 700px; height: 250px' id='placeholder'></div>");
+            echo("<div style='width: 1000px; height: 400px' id='placeholder'></div>");
         }
 
         if($type == "header"){
