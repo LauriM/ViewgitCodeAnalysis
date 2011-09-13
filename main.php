@@ -16,11 +16,13 @@ class ClocPlugin extends VGPlugin{
 
             $project = $page['project'];
 
-            $output = run_git($project, "log --shortstat --reverse --pretty=oneline");
+            $output = run_git($project, "log --shortstat --reverse --pretty=format%at");
             
             $current_lines = 0;
+            $current_times = 0;
 
-            $graph_data[] = array("0");
+            $graph_data[] = array();
+            $graph_time[] = array();
 
             for($i = 0;$i < sizeof($output);$i++){
                 //echo($output[$i] . "<br/>");
@@ -42,6 +44,13 @@ class ClocPlugin extends VGPlugin{
                     array_push($graph_data,$current_lines);
 
                     //echo("$current_lines ($result) <br/>");
+                }else{
+                    if($output[$i] <> ""){
+                        //Unixtime is always first, thats why it will to array on the next output row ^^
+                        $unixtime = $output[$i];
+                        $unixtime = str_replace("format","",$unixtime);
+                        array_push($graph_time,$unixtime);
+                    }
                 }
             }
 
@@ -50,19 +59,24 @@ class ClocPlugin extends VGPlugin{
 
             echo("<script id='source' language='javascript' type='text/javascript'>");
             echo("$(function(){");
+/*
+            echo("sizeof data ".sizeof($graph_data));
+            echo("sizeof time".sizeof($graph_time));
+ */
 
             $blob = "";
             $first = true;
+            $firstreal = true;
 
             for($i = 0;$i < sizeof($graph_data);$i++){
                 $value = $graph_data[$i];
+                $time  = $graph_time[$i];
 
-                if($first == true){
-                    $blob = "[$i,$value]";
-
-                    $first = false;
+                if($firstreal == true){//Drop dot from first data section
+                    $blob = "$blob"."[$time,$value]";
+                    $firstreal = false;
                 }else{
-                    $blob = "$blob,[$i,$value]";
+                    $blob = "$blob,[$time,$value]";
                 }
             }
 
