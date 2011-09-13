@@ -12,6 +12,7 @@ class ClocPlugin extends VGPlugin{
 	function hook($type) {
         if($type == "summary"){
             global $page;
+
             echo("<h2>Code analysis</h2>");
 
             $project = $page['project'];
@@ -20,6 +21,7 @@ class ClocPlugin extends VGPlugin{
             
             $current_lines = 0;
             $current_times = 0;
+            $true_current_lines = 0;
 
             $graph_data[] = array();
             $graph_time[] = array();
@@ -38,10 +40,18 @@ class ClocPlugin extends VGPlugin{
                     $result = $ins - $del;
 
                     //Add to the line count
-                    $current_lines = $current_lines + $result;
 
-                    //Add to graph array
-                    array_push($graph_data,$current_lines);
+                    //check for added libraries/log files anything else big that would mess up the whole damn thing
+                    if($result < 400 && $result > -400){
+                        $current_lines = $current_lines + $result;
+                        array_push($graph_data,$current_lines);
+                        array_push($graph_time,$unixtime);
+
+                        $true_current_lines = $true_current_lines + $result;
+                    }else{
+                        //Change the true count even if there is HUGE commit blob
+                        $true_current_lines = $true_current_lines + $result;
+                    }
 
                     //echo("$current_lines ($result) <br/>");
                 }else{
@@ -50,12 +60,14 @@ class ClocPlugin extends VGPlugin{
                         $unixtime = $output[$i];
                         $unixtime = str_replace("format","",$unixtime);
                         $unixtime = $unixtime * 1000;//This is to fix the javascript way of handling time
-                        array_push($graph_time,$unixtime);
                     }
                 }
             }
 
             echo("<p>Total lines: $current_lines</p>");
+            if($current_lines <> $true_current_lines){
+                echo("<p>True line count: $true_current_lines (may contain log files and external libraries)</p>");
+            }
             echo("<h3>Graph</h3>");
 
             echo("<script id='source' language='javascript' type='text/javascript'>");
