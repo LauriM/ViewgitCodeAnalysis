@@ -1,4 +1,10 @@
 <?php
+//viewgitCountLinesOfCode
+//By Lauri Makinen
+//http://laurimakine.net
+//
+//version: 0.5
+
 //TODO: move limit to global config file
 
 class ClocPlugin extends VGPlugin{
