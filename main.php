@@ -48,28 +48,35 @@ class ClocPlugin extends VGPlugin{
             echo("<p>Total lines: $current_lines</p>");
             echo("<h3>Graph</h3>");
 
-            echo("<script id='source' language='javascript' type='text/javascript>");
+            echo("<script id='source' language='javascript' type='text/javascript'>");
             echo("$(function(){");
-
-            echo("$.plot($('#placeholder'),["); 
 
             $blob = "";
             $first = true;
 
             for($i = 0;$i < sizeof($graph_data);$i++){
+                $value = $graph_data[$i];
+
                 if($first == true){
-                    $blob = $graph_data[$i];
+                    $blob = "[$i,$value]";
+
+                    $first = false;
                 }else{
-                    $blob = "$blob"."q"."$graph_data[$i]";
+                    $blob = "$blob,[$i,$value]";
                 }
             }
 
-            echo($blob);
+            echo("var data = [$blob];");
 
+            echo("$.plot($('#placeholder'),["); 
+                echo("data");
             echo("]);");
+
             echo("});");
             echo("</script>");
 
+            //The actual div where the graph is placed
+            echo("<div style='width: 700px; height: 250px' id='placeholder'></div>");
         }
 
         if($type == "header"){
