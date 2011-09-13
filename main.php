@@ -47,6 +47,29 @@ class ClocPlugin extends VGPlugin{
 
             echo("<p>Total lines: $current_lines</p>");
             echo("<h3>Graph</h3>");
+
+            echo("<script id='source' language='javascript' type='text/javascript>");
+            echo("$(function(){");
+
+            echo("$.plot($('#placeholder'),["); 
+
+            $blob = "";
+            $first = true;
+
+            for($i = 0;$i < sizeof($graph_data);$i++){
+                if($first == true){
+                    $blob = $graph_data[$i];
+                }else{
+                    $blob = "$blob"."q"."$graph_data[$i]";
+                }
+            }
+
+            echo($blob);
+
+            echo("]);");
+            echo("});");
+            echo("</script>");
+
         }
 
         if($type == "header"){
