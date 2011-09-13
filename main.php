@@ -17,30 +17,22 @@ class ClocPlugin extends VGPlugin{
         $current_lines = 0;
 
         for($i = 0;$i < sizeof($output);$i++){
-            if($stat_line == false){
-                //We are on a commit message line, do nothing
+            echo($output[$i] . "<br/>");
 
-                $stat_line = true;
-            }else{
+            $blob = explode(" ",$output[$i]);
+
+            if($blob[2] == "files" && $blob[3] == "changed," && $blob[7] == "deletions(-)"){
                 //Stat line, get the insert/deletion amounts!
-
-                //1 files changed, 0 insertions(+), 12 deletions(-)
-                $blob = explode(" ",$output[$i]);
 
                 $ins    = $blob[4];
                 $del    = $blob[6];
                 $result = $ins - $del;
 
-                //Limit huge commits away (usually happens when libraries like JQuery are added)
-                if($result < 250 AND $result > -250){
-                    //Add to the line count
-                    $current_lines = $current_lines + $result;
+                //Add to the line count
+                $current_lines = $current_lines + $result;
 
-                    //Add to graph array
-                    $stat_line = array_push($stat_line,$current_lines);
-                    if($BLABLABLALB == true){
-                    }
-                }
+                //Add to graph array
+                $stat_line = array_push($stat_line,$current_lines);
 
                 echo("$current_lines ($result) <br/>");
 
