@@ -10,17 +10,21 @@ class ClocPlugin extends VGPlugin{
 	function hook($type) {
         global $page;
         echo("<h2>Code analysis</h2>");
+
         $project = $page['project'];
 
         $output = run_git($project, "log --shortstat --reverse --pretty=oneline");
         
         $current_lines = 0;
 
+        $graph_data[] = array("0");
+
         for($i = 0;$i < sizeof($output);$i++){
-            echo($output[$i] . "<br/>");
+            //echo($output[$i] . "<br/>");
 
             $blob = explode(" ",$output[$i]);
 
+            //Check that this is really a stat line
             if($blob[2] == "files" && $blob[3] == "changed," && $blob[7] == "deletions(-)"){
                 //Stat line, get the insert/deletion amounts!
 
@@ -32,16 +36,13 @@ class ClocPlugin extends VGPlugin{
                 $current_lines = $current_lines + $result;
 
                 //Add to graph array
-                $stat_line = array_push($stat_line,$current_lines);
+                array_push($graph_data,$current_lines);
 
-                echo("$current_lines ($result) <br/>");
-
-                $stat_line = false;
+                //echo("$current_lines ($result) <br/>");
             }
         }
 
         echo("<p>Total lines: $current_lines</p>");
-        var_dump($stat_line);
+        echo("<h3>Graph</h3>");
 	}
 }
-
