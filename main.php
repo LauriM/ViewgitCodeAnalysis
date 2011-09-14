@@ -1,5 +1,5 @@
 <?php
-//viewgitCountLinesOfCode
+//ViewgitCodeAnalysis
 //By Lauri Makinen
 //http://laurimakine.net
 //
@@ -7,7 +7,7 @@
 
 //TODO: move limit to global config file
 
-class ClocPlugin extends VGPlugin{
+class CodeAnalysisPlugin extends VGPlugin{
 	function __construct(){
 		global $conf;
         $this->register_hook('summary');
@@ -111,8 +111,8 @@ class ClocPlugin extends VGPlugin{
         if($type == "header"){
             //TODO: move to a template
             echo("\n");
-            echo("<script type='text/javascript' src='plugins/cloc/jquery.js'></script>\n");
-            echo("<script type='text/javascript' src='plugins/cloc/jquery.flot.js'></script>\n");
+            echo("<script type='text/javascript' src='plugins/codeAnalysis/jquery.js'></script>\n");
+            echo("<script type='text/javascript' src='plugins/codeAnalysis/jquery.flot.js'></script>\n");
         }
     }
 }
