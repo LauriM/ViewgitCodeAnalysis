@@ -3,7 +3,7 @@
 //By Lauri Makinen
 //http://laurimakine.net
 //
-//version: 0.5
+//version: 1.0
 
 //TODO: move limit to global config file
 
