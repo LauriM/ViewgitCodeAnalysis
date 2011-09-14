@@ -23,7 +23,7 @@ class CodeAnalysisPlugin extends VGPlugin{
 
             $project = $page['project'];
 
-            $output = run_git($project, "log --shortstat --reverse --pretty=format%at");
+            $output = run_git($project, "log --shortstat --reverse --pretty=format%ct");
             
             $current_lines = 0;
             $current_times = 0;
@@ -116,3 +116,4 @@ class CodeAnalysisPlugin extends VGPlugin{
         }
     }
 }
+?>
