@@ -5,8 +5,6 @@
 //
 //version: 1.0
 
-//TODO: move limit to global config file
-
 class CodeAnalysisPlugin extends VGPlugin{
 	function __construct(){
 		global $conf;
