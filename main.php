@@ -3,11 +3,10 @@
 //By Lauri Makinen
 //http://laurimakine.net
 //
-//version: 1.0
+//version: 1.1
 
 //TODO:
-// * Way to change the threshold
-// * Display commit count and average lines per commit
+// * Way to change the threshold (just go and change the values on line 57)
 
 class CodeAnalysisPlugin extends VGPlugin{
 	function __construct(){
